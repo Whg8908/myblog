@@ -11,6 +11,10 @@ var swig = require("swig");
 //创建app应用
 var app = express();
 
+//设置静态文件托管
+//当用户访问得url以/public开始,那么直接返回对应得__dirname+'/public'下的文件
+app.use('/public', express.static(__dirname + '/public'))
+
 //配置应用模板
 //当前应用使用的模板引擎
 //第一个参数是模板后缀
