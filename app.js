@@ -33,16 +33,24 @@ app.set("view engine", "html")
 
 swig.setDefaults({cache: false})
 
+// /**
+//  * 首页
+//  */
+// app.get('/', function (req, res, next) {
+//     // res.send('<h1>欢迎光临我的博客!</h1>');
+//     /**
+//      * 读取views目录下的指定文件,解析并返回给客户端
+//      */
+//     res.render('index')
+// });
+
 /**
- * 首页
+ * 根据不同的功能划分模块
  */
-app.get('/', function (req, res, next) {
-    // res.send('<h1>欢迎光临我的博客!</h1>');
-    /**
-     * 读取views目录下的指定文件,解析并返回给客户端
-     */
-    res.render('index')
-});
+app.use('/admin',require('./routers/admin'))
+app.use('/api',require('./routers/api'))
+app.use('/',require('./routers/main'))
+
 
 //监听http请求
 app.listen(10086);
