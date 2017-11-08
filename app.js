@@ -8,6 +8,9 @@
 var express = require('express');
 //加载模板
 var swig = require("swig");
+//加载数据库
+var mongoose = require('mongoose')
+
 //创建app应用
 var app = express();
 
@@ -52,7 +55,14 @@ app.use('/api',require('./routers/api'))
 app.use('/',require('./routers/main'))
 
 
-//监听http请求
-app.listen(10086);
+//连接数据库  监听http请求
+mongoose.connect('mongodb://localhost:27018/blog',function (err) {
+    if (err){
+        console.log('数据库连接失败')
+    }else{
+        console.log('数据库连接成功')
+        app.listen(10086);
+    }
+})
 
 
