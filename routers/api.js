@@ -7,6 +7,7 @@
 
 var express = require('express')
 var router = express.Router()
+var User = require('../models/User')
 
 //统一返回格式
 var responseData
@@ -61,9 +62,30 @@ router.post('/user/register', function (req, res, next) {
         return
     }
 
-    //注册成功
-    responseData.message = '注册成功'
-    res.json(responseData)
+    //用户名是否已经注册,在数据库中查询
+    User.findOne({
+        username: username
+    }).then(function (userInfo) {
+        console.log(userInfo)
+        if (userInfo) {
+            //表示数据库中有该记录
+            responseData.code = 4
+            responseData.message = '用户名已经被注册'
+            res.json(responseData)
+            return
+        }//数据库中保存数据
+
+        var user = new User({
+            username: username,
+            password: password
+        })
+        return user.save()
+    }).then(function (newUserInfo) {
+        console.log(newUserInfo)
+        //注册成功
+        responseData.message = '注册成功'
+        res.json(responseData)
+    })
 
 })
 
