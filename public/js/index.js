@@ -29,7 +29,7 @@ $(function() {
             data: {
                 username: $registerBox.find('[name="username"]').val(),
                 password: $registerBox.find('[name="password"]').val(),
-                repassword:  $registerBox.find('[name="repassword"]').val()
+                repassword:  $registerBox.find('[ name="repassword"]').val()
             },
             dataType: 'json',
             success: function(result) {

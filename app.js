@@ -10,7 +10,8 @@ var express = require('express');
 var swig = require("swig");
 //加载数据库
 var mongoose = require('mongoose')
-
+//加载body-parser,用来处理post提交过来的数据
+var bodyParser = require('body-parser')
 //创建app应用
 var app = express();
 
@@ -36,6 +37,9 @@ app.set("view engine", "html")
 
 swig.setDefaults({cache: false})
 
+//body_parser设置
+app.use(bodyParser.urlencoded({extended: true}))
+
 // /**
 //  * 首页
 //  */
@@ -50,16 +54,16 @@ swig.setDefaults({cache: false})
 /**
  * 根据不同的功能划分模块
  */
-app.use('/admin',require('./routers/admin'))
-app.use('/api',require('./routers/api'))
-app.use('/',require('./routers/main'))
+app.use('/admin', require('./routers/admin'))
+app.use('/api', require('./routers/api'))
+app.use('/', require('./routers/main'))
 
 
 //连接数据库  监听http请求
-mongoose.connect('mongodb://localhost:27018/blog',function (err) {
-    if (err){
+mongoose.connect('mongodb://localhost:27018/blog', function (err) {
+    if (err) {
         console.log('数据库连接失败')
-    }else{
+    } else {
         console.log('数据库连接成功')
         app.listen(10086);
     }
