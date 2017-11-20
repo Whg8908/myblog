@@ -89,4 +89,42 @@ router.post('/user/register', function (req, res, next) {
 
 })
 
+/**
+ * 登录
+ */
+router.post('/user/login', function (req, res) {
+    var user = req.body;
+    var username = user.username;
+    var password = user.password;
+
+    if (username == '' || password == '') {
+        responseData.code = 1
+        responseData.message = '用户名或密码不能为空'
+        res.json(responseData)
+        return
+    }
+
+    //查询数据库中相同用户的用户名和密码是否一样,如果一样则登录成功
+    User.findOne({
+        username: username,
+        password: password
+    }).then(function (userInfo) {
+        if (!userInfo) {
+            responseData.code = 2
+            responseData.message = '用户名或密码错误'
+            res.json(responseData)
+            return
+        }
+
+        //用户名和密码是正确的
+        responseData.message = '登录成功'
+        responseData.userInfo = {
+            _id: userInfo._id,
+            username: userInfo.username,
+        }
+        res.json(responseData)
+        return
+    })
+})
+
 module.exports = router
